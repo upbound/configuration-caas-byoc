@@ -1,0 +1,19 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: configuration-caas-byoc
+  annotations:
+    meta.crossplane.io/maintainer: The configuration-caas-byoc Configuration
+    meta.crossplane.io/source: github.com/upbound/configuration-caas-byoc
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      This repository offers a configuration for Bring Your Own Controller (BYOC)
+    meta.crossplane.io/readme: |
+      This repository offers a configuration for Bring Your Own Controller (BYOC)
+      that is built on top of the Cluster-as-a-Service configuration.
+spec:
+  crossplane:
+    version: ">=v1.12.1-0"
+  dependsOn:
+    - configuration: xpkg.upbound.io/upbound/configuration-caas
+      version: ">=v0.2.0"

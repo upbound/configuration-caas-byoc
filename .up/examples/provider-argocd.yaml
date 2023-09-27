@@ -1,0 +1,9 @@
+apiVersion: byoc.caas.upbound.io/v1alpha1
+kind: Provider
+metadata:
+  name: provider-argocd
+  namespace: default
+spec:
+  parameters:
+    package: xpkg.upbound.io/crossplane-contrib/provider-argocd:v0.4.0-rc.0.2.gd456a7b
+    replicas: 0

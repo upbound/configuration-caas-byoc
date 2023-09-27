@@ -1,0 +1,14 @@
+apiVersion: applications.argocd.crossplane.io/v1alpha1
+kind: Application
+metadata:
+  name: application-mcp-1
+spec:
+  forProvider:
+    destination:
+      namespace: default
+      name: mcp-1
+    project: default
+    source:
+      repoURL: # enter an valid git url
+      path: ./
+      targetRevision: HEAD

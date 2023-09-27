@@ -1,0 +1,13 @@
+---
+apiVersion: cluster.argocd.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: mcp-1
+spec:
+  forProvider:
+    name: mcp-1
+    config:
+      kubeconfigSecretRef:
+        name: mcp-kubeconfig
+        namespace: default
+        key: kubeconfig

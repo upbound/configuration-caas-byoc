@@ -1,0 +1,39 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xproviders.byoc.caas.upbound.io
+spec:
+  compositeTypeRef:
+    apiVersion: byoc.caas.upbound.io/v1alpha1
+    kind: XProvider
+  resources:
+    - base:
+        apiVersion: pkg.crossplane.io/v1alpha1
+        kind: ControllerConfig
+      patches:
+        - fromFieldPath: spec.parameters.args
+          toFieldPath: spec.args
+        - fromFieldPath: spec.parameters.replicas
+          toFieldPath: spec.replicas
+        - type: ToCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: status.status.controllerConfigName
+          policy:
+            fromFieldPath: Optional
+      name: controllerConfig
+      readinessChecks:
+        - type: None
+
+    - base:
+        apiVersion: pkg.crossplane.io/v1
+        kind: Provider
+      patches:
+        - fromFieldPath: status.status.controllerConfigName
+          toFieldPath: spec.controllerConfigRef.name
+        - fromFieldPath: spec.parameters.package
+          toFieldPath: spec.package
+      name: provider
+      readinessChecks:
+        - type: MatchString
+          fieldPath: status.conditions[0].status
+          matchString: "True"

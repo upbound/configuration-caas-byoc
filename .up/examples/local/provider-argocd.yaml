@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provider-argocd
+  namespace: default
+  annotations:
+    uptest.upbound.io/conditions: "Available=True"
+    uptest.upbound.io/pre-delete-hook: testhooks/delete.sh
+  labels:
+    app: provider-argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: provider-argocd
+  template:
+    metadata:
+      labels:
+        app: provider-argocd
+    spec:
+      containers:
+        - name: server
+          image: xpkg.upbound.io/crossplane-contrib/provider-argocd:v0.4.0-rc.0.2.gd456a7b
+          imagePullPolicy: IfNotPresent
+          args:
+            - --debug
+          env:
+            - name: DO_NOTHING
+              value: "false"
+            - name: KUBECONFIG
+              value: /etc/mcp-kubeconfig/kubeconfig
+          volumeMounts:
+            - name: mcp-kubeconfig
+              mountPath: /etc/mcp-kubeconfig
+      volumes:
+        - name: mcp-kubeconfig
+          secret:
+            secretName: mcp-kubeconfig
